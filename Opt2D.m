@@ -14,7 +14,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Parameters
-n=20;
+n=30;
 y1=0;
 y2=0;
 
@@ -56,15 +56,15 @@ DX=1/(12*dx)*DX;
 %% Construction of initial profile;
 [X,Y] = meshgrid(linspace(0,1,n-2),linspace(0,1,n-2));
 %guess = [X(:,1:n/2) 1-X(:,n/2+1:end)]+[Y(1:n/2,:); 1-Y(n/2+1:end,:)];
-guess = cos((0.5-X).^2+(0.5-Y).^2);
+guess = cos(4*pi*X)+cos(4*pi*Y);
 
 
 
 %% Optimization Routine
 options=optimset('MaxFunEvals',1e+9,'MaxIter',10^3,'Display','iter');
 % 
-delta = 0; %try 0.001 vs 1
-epsilon = 0.01;
+delta = 1; %try 0.001 vs 1
+epsilon = 0.1;
 g = @(f) functional2d(delta,epsilon,f,DX,dx);
 x0 = guess;
 ub = ones(n-2,n-2)*10;
