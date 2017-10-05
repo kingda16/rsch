@@ -63,13 +63,14 @@ guess = cos(4*pi*X)+cos(4*pi*Y);
 %% Optimization Routine
 options=optimset('MaxFunEvals',1e+9,'MaxIter',10^3,'Display','iter');
 % 
-delta = 1; %try 0.001 vs 1
+delta = 100; %try 0.001 vs 1
 epsilon = 0.1;
 g = @(f) functional2d(delta,epsilon,f,DX,dx);
 x0 = guess;
 ub = ones(n-2,n-2)*10;
 lb = ones(n-2,n-2)*-10;
 [x,opt] = fmincon(g,x0,[],[],[],[],lb,ub,[],options);
+x = [zeros(1,n); zeros(n-2,1) x zeros(n-2,1); zeros(1,n)];
 surf(x)
 
 
