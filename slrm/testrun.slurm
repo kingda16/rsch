@@ -9,4 +9,6 @@
 #SBATCH --mem=4gb
 #SBATCH --time=0-00:30:00
 
-use-student-matlab -r /deac/generalGrp/gemmerGrp/DAK/code/Opt2D
+
+cd /deac/generalGrp/gemmerGrp/DAK/code
+use-student-matlab -r Opt2D
