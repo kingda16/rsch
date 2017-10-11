@@ -1,18 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%   CalcVarExample
-%
-%   This code computes the curve that minimizes the distance between two
-%   points. 
-%
-%
-%   Parameters:
-%   1. n = number of sample points
-%   2. y1 = y starting coordinate
-%   3. y2 = y ending coordiante
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %% Parameters
 n=25;
 y1=0;
