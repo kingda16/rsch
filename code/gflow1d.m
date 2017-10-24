@@ -1,27 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%   Heat Equation Example
+%   Dylan King
 %
-%   This code computes the evolution of a solution to the heat equation on
-%   the domain [0,1] with Dirichlet boundary conditions. The version of the
-%   heat equation we consider is defined by:
+%   1-dimensional gradient flow
 %
-%   u_t=Du_{xx}
 %
-%   Parameters:
-%   1. n = number of sample points
-%   2. D= diffusion coefficient
-%   3. d1 = left Dirichlet condition
-%   4. d2= right Dirichlet condition
-%   5. M=number of sample points in time
-%   6. T= maximum time
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Parameters
 n=200;
-d1=0;
-d2=0;
 M=100;
 T=0.01;
 
