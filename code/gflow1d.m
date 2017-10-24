@@ -19,11 +19,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Parameters
-n=100;
+n=200;
 d1=0;
 d2=0;
-M=20;
-T=0.1;
+M=100;
+T=0.01;
 
 %% Construction of domain and differential operators
 x=linspace(0,1,n);
@@ -60,10 +60,15 @@ DX(n-1,n-4)=-1;
 DX=1/(12*dx)*DX;
 DX = sparse(DX);
 
+DXX=-2*diag(ones(n,1),0)+diag(ones(n-1,1),1)+diag(ones(n-1,1),-1);
+DXX=DXX/(dx.^2);
+
+DXX=sparse(DXX);
+
 %% Construction of initial profile
-guess= 1.1*x;
-%guess = sin(pi*x);
+guess= 0.9*x;
+%guess = sin(2*pi*x);
 options = odeset('Stats','on','OutputFcn',@odeplot)
-[t,u] = ode45(@(t,u) grad1d(t,u,DX,0.1,1),t,guess,options); %1,0.5
+[t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,1,1),t,guess,options);
 plot(u(end,:))
 
