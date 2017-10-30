@@ -1,5 +1,5 @@
 %% Parameters
-n=200;
+n=100;
 
 
 %% Construction of parametrization domain and differential operators
@@ -46,7 +46,7 @@ guess = x(2:end-1);
 %% Optimization Routine
 options=optimset('MaxFunEvals',1e+9,'MaxIter',10^3,'Display','iter');
 % 
-delta = 1; %try 0.001 vs 1
+delta = 0; %try 0.001 vs 1
 epsilon = 0.1;
 g = @(f) functional1d(delta,epsilon,[0 f 0],DX,dx);
 x0 = guess;
