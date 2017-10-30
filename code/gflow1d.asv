@@ -7,8 +7,8 @@
 %
 
 %% Parameters
-n=20;
-M=10;
+n=50;
+M=2;
 T=0.1;
 
 %% Construction of domain and differential operators
@@ -65,15 +65,12 @@ DXX = sparse(DXX);
 DX = sparse(DX);
 
 %% Construction of initial profile
-guess = sin(pi*x);
+guess = sin(20*pi*x);
+
+delta = 0.1;
+epsilon = 0.01;
+
 options = odeset('Stats','on','OutputFcn',@odeplot)
-[t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,0.01,0.1),t,guess,options);
+[t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,delta,epsilon),t,guess,options);
 plot(u(end,:))
-data = []
-for i = 1:M
-   data = [data functional1d(0.01,0.1,u(i,:),DX,
-    
-    
-    
-end
 

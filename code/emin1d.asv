@@ -1,15 +1,12 @@
+function [ minu ] = emin( delta,epsilon,n,k)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %   Dylan King
 %
-%   1-dimensional gradient flow
-%
-%
-
-%% Parameters
-n=30;
+%  takes in delta, epsilon, finds the energy minimizing function over sin
+%  frequencies up to k
 M=2;
-T=0.01;
+T=0.005;
 
 %% Construction of domain and differential operators
 x=linspace(0,1,n);
@@ -64,13 +61,31 @@ DXXXX = sparse(DXXXX);
 DXX = sparse(DXX);
 DX = sparse(DX);
 
-%% Construction of initial profile
-guess = 5*sin(2*pi*x);
+mine = 10^10;
+minu = zeros(1,n);
 
-delta = 0.1;
-epsilon = 0.01;
+options = odeset('Stats','on');%,'OutputFcn',@odeplot);
 
-options = odeset('Stats','on','OutputFcn',@odeplot)
-[t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,delta,epsilon),t,guess,options);
-plot(u(end,:))
+%% Optimization
+
+for i = 1:k
+disp(i);
+xold = zeros(1,n);
+u = sin(i*pi*x);
+
+
+
+while max(abs((xold-u(end,:)))) > 10^-2
+    xold = u(end,:);
+    [t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,delta,epsilon),t,xold);%,options);
+    disp(functional1d(delta,epsilon,u(end,:),DX,dx))
+end
+if functional1d(delta,epsilon,u(end,:),DX,dx) < mine
+    mine = functional1d(delta,epsilon,u(end,:),DX,dx);
+    minu = u(end,:);
+end
+
+end
+
+end
 
