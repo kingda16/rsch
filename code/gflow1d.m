@@ -7,9 +7,9 @@
 %
 
 %% Parameters
-n=30;
-M=2;
-T=0.01;
+n=200;
+M=50;
+T=0.000005;
 
 %% Construction of domain and differential operators
 x=linspace(0,1,n);
@@ -65,12 +65,31 @@ DXX = sparse(DXX);
 DX = sparse(DX);
 
 %% Construction of initial profile
-guess = 5*sin(2*pi*x);
+guess = 8*x.*(1-x)+0.2*sin(23*pi*x);
+guess(1) = 0;
+guess(end) = 0;
 
 delta = 0.1;
-epsilon = 0.01;
+epsilon = 0.005;
 
 options = odeset('Stats','on','OutputFcn',@odeplot)
 [t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,delta,epsilon),t,guess,options);
-plot(u(end,:))
+
+
+vidObj = VideoWriter('test.avi');
+open(vidObj);
+
+figure('units','normalized','outerposition',[0 0 1 1]);
+
+for k=1:M,
+        clf;
+    plot(u(k,:));
+shg;
+ylim([0 3])
+    currFrame = getframe(gcf);
+    writeVideo(vidObj,currFrame);
+    
+end
+
+close(vidObj);
 

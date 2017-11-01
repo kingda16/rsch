@@ -78,6 +78,7 @@ u = sin(i*pi*x);
 while max(abs((xold-u(end,:)))) > 10^-3
     xold = u(end,:);
     [t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,delta,epsilon),t,xold);%,options);
+    disp(i);
 end
 disp(functional1d(delta,epsilon,u(end,:),DX,dx))
 if functional1d(delta,epsilon,u(end,:),DX,dx) < mine
