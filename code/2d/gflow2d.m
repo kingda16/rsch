@@ -101,9 +101,9 @@ save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n)),'u','
 % for k=1:M,
 %         clf;
 %     out = reshape(u(k,:),[n,n]);
-%     contourf(out,200,'Linestyle','none')
-%     zlim([0.75 1])
-%     %surf(out);
+%     %contourf(out,200,'Linestyle','none')
+%     %zlim([0.75 1])
+%     surf(x,y,out);
 %     %view(0,90);
 % shg;
 % zlim([0 1])
