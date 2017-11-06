@@ -7,7 +7,7 @@
 #SBATCH --nodes=2
 #SBATCH --tasks-per-node=8
 #SBATCH --mem=4gb
-#SBATCH --time=0-00:30:00
+#SBATCH --time=0-23:30:00
 
 
 
