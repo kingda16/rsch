@@ -2,16 +2,18 @@
 %
 %   Dylan King
 %
-%   1-dimensional gradient flow
+%   2-dimensional gradient flow
 %
 %
 
 %% Parameters
 n=200;
 M=50;
-T=0.000001;
+T=0.00002;
 
 %% Construction of domain and differential operators
+t=linspace(0,T,M);
+
 x=linspace(0,1,n);
 dx=x(2)-x(1);
 [x,y] = meshgrid(x,x);
@@ -66,16 +68,29 @@ DXX = sparse(DXX);
 DX = sparse(DX);
 
 %% Construction of initial profile
-guess = sin(pi*x)+sin(4*pi*y);
+guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
+
+
+guess(1,:) = 0;
+guess(end,:) = 0;
+guess(:,1) = 0;
+guess(:,end) = 0;
+
+
 guess=reshape(guess,[n*n,1]);
 
 
  
-% delta = 1;
-% epsilon = 0.01;
-%     
-% options = odeset('Stats','on','OutputFcn',@odeplot)
-% [t,u] = ode45(@(t,u) grad1d(t,u,DX,DXX,DXXXX,delta,epsilon),t,guess,options);
+delta = 0.1;
+epsilon = 0.2;
+    
+options = odeset('Stats','on')
+[t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,options);
+
+save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n)),'u','t');
+
+
+% out = reshape(u(end,:),[n,n]);
 % 
 % 
 % vidObj = VideoWriter('test.avi');
@@ -85,9 +100,13 @@ guess=reshape(guess,[n*n,1]);
 % 
 % for k=1:M,
 %         clf;
-%     plot(x',u(k,:));
+%     out = reshape(u(k,:),[n,n]);
+%     %contourf(out,200,'Linestyle','none')
+%     %zlim([0.75 1])
+%     surf(x,y,out);
+%     %view(0,90);
 % shg;
-% ylim([0 3])
+% zlim([0 1])
 %     currFrame = getframe(gcf);
 %     writeVideo(vidObj,currFrame);
 %     
