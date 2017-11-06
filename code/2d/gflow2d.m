@@ -7,9 +7,9 @@
 %
 
 %% Parameters
-n=200;
+n=100;
 M=50;
-T=0.002;
+T=0.1;
 
 %% Construction of domain and differential operators
 t=linspace(0,T,M);
@@ -81,13 +81,13 @@ guess=reshape(guess,[n*n,1]);
 
 
  
-delta = 0.1;
-epsilon = 0.2;
+delta = 0.5;
+epsilon = 0.01;
     
 options = odeset('Stats','on')
 [t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,options);
 
-save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n)),'u','t');
+save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t');
 
 
 % out = reshape(u(end,:),[n,n]);
