@@ -9,7 +9,7 @@
 %% Parameters
 n=200;
 M=50;
-T=0.00002;
+T=0.002;
 
 %% Construction of domain and differential operators
 t=linspace(0,T,M);
@@ -102,11 +102,11 @@ save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n)),'u','
 %         clf;
 %     out = reshape(u(k,:),[n,n]);
 %     %contourf(out,200,'Linestyle','none')
-%     %zlim([0.75 1])
+% 
 %     surf(x,y,out);
-%     %view(0,90);
+%     view(-37.5,30);
 % shg;
-% zlim([0 1])
+% zlim([-1 1])
 %     currFrame = getframe(gcf);
 %     writeVideo(vidObj,currFrame);
 %     

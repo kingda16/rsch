@@ -7,9 +7,9 @@
 %
 
 %% Parameters
-n=20;
+n=50;
 M=50;
-T=0.1;
+T=0.00002;
 
 %% Construction of domain and differential operators
 t=linspace(0,T,M);
@@ -68,7 +68,7 @@ DXX = sparse(DXX);
 DX = sparse(DX);
 
 %% Construction of initial profile
-guess = 0.5*sin(pi*x).*sin(pi*y);
+guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
 
 
 guess(1,:) = 0;
@@ -84,27 +84,33 @@ guess=reshape(guess,[n*n,1]);
 delta = 0.1;
 epsilon = 0.2;
     
-options = odeset('Stats','on','OutputFcn',@odeplot)
+options = odeset('Stats','on')
 [t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,options);
 
+save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n)),'u','t');
 
-out = reshape(u(end,:),[n,n]);
 
+% out = reshape(u(end,:),[n,n]);
+% 
+% 
+vidObj = VideoWriter('test.avi');
+open(vidObj);
 
-% vidObj = VideoWriter('test.avi');
-% open(vidObj);
-% 
-% figure('units','normalized','outerposition',[0 0 1 1]);
-% 
-% for k=1:M,
-%         clf;
-%     plot(x',u(k,:));
-% shg;
-% ylim([0 3])
-%     currFrame = getframe(gcf);
-%     writeVideo(vidObj,currFrame);
-%     
-% end
-% 
-% close(vidObj);
+figure('units','normalized','outerposition',[0 0 1 1]);
+
+for k=1:M,
+        clf;
+    out = reshape(u(k,:),[n,n]);
+    %contourf(out,200,'Linestyle','none')
+
+    surf(x,y,out);
+    view(-37.5,30);
+shg;
+zlim([-1 1])
+    currFrame = getframe(gcf);
+    writeVideo(vidObj,currFrame);
+    
+end
+
+close(vidObj);
 
