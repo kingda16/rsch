@@ -7,8 +7,8 @@
 %
 
 %% Parameters
-n=100;
-M=50;
+n=75;
+M=150;
 T=0.1;
 
 %% Construction of domain and differential operators
@@ -68,8 +68,8 @@ DXX = sparse(DXX);
 DX = sparse(DX);
 
 %% Construction of initial profile
-guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
-
+%guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
+guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
 
 guess(1,:) = 0;
 guess(end,:) = 0;
@@ -81,13 +81,13 @@ guess=reshape(guess,[n*n,1]);
 
 
  
-delta = 0.5;
-epsilon = 0.01;
+delta = 1;
+epsilon = 0.2;
     
 options = odeset('Stats','on')
 [t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,options);
 
-save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t');
+save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
 
 
 % out = reshape(u(end,:),[n,n]);
