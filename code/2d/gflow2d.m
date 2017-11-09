@@ -1,3 +1,4 @@
+function [] = gflow2d( delta,epsilon,n,M,T )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %   Dylan King
@@ -6,10 +7,6 @@
 %
 %
 
-%% Parameters
-n=75;
-M=150;
-T=0.1;
 
 %% Construction of domain and differential operators
 t=linspace(0,T,M);
@@ -79,38 +76,10 @@ guess(:,end) = 0;
 
 guess=reshape(guess,[n*n,1]);
 
-
- 
-delta = 1;
-epsilon = 0.2;
-    
 options = odeset('Stats','on')
 [t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,options);
 
 save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
 
-
-% out = reshape(u(end,:),[n,n]);
-% 
-% 
-vidObj = VideoWriter('test.avi');
-open(vidObj);
-
-figure('units','normalized','outerposition',[0 0 1 1]);
-
-for k=1:M,
-        clf;
-    out = reshape(u(k,:),[n,n]);
-    %contourf(out,200,'Linestyle','none')
-
-    surf(x,y,out);
-    view(-37.5,30);
-shg;
-zlim([-1 1])
-    currFrame = getframe(gcf);
-    writeVideo(vidObj,currFrame);
-    
 end
-
-close(vidObj);
 
