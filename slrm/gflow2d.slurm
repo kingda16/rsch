@@ -13,4 +13,4 @@
 
 cd /deac/generalGrp/gemmerGrp/DAK/code/2d
 module load matlab-2017a
-use-student-matlab -r "gflow2d(0.1,0.2,75,150,0.1)"
+use-student-matlab -r "gflow2d(0.1,0.2,75,150,0.001)"
