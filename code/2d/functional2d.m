@@ -2,7 +2,7 @@ function [F] = functional2d(delta,epsilon,u,DX,DXX,dx,N)
 u=reshape(u,[N,N]);
 
 ux = DX*u;
-uxx = DXX*u;
+uxx = DXX*u
 uy = (DX*u')';
 uyy = (DXX*u')';
 uxy = (DX*(DX*u)')';
