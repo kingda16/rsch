@@ -14,6 +14,7 @@ t=linspace(0,T,M);
 x=linspace(0,1,n);
 dx=x(2)-x(1);
 [x,y] = meshgrid(x,x);
+guess = zeros(n,n);
 
 
 %identity ui-1+ui+1==2ui at bdry
@@ -65,6 +66,13 @@ DXX = sparse(DXX);
 DX = sparse(DX);
 
 %% Construction of initial profile
+for i = 1:n
+    for j = 1:n
+        guess(i,j) = max([0.4*power(10*x(1,i).*(1-x(1,i)).*(1-y(j,1)).*y(j,1),1/4),tfunc(x(1,i),y(j,1))]);
+    end
+end
+
+
 guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
 
