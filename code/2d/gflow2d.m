@@ -73,7 +73,7 @@ for i = 1:n
 end
 
 
-guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
+%guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
 
 guess(1,:) = 0; 
