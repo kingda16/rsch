@@ -68,7 +68,7 @@ DX = sparse(DX);
 %% Construction of initial profile
 for i = 1:n
     for j = 1:n
-        guess(i,j) = max([0.4*power(10*x(1,i).*(1-x(1,i)).*(1-y(j,1)).*y(j,1),1/4),tfunc(x(1,i),y(j,1))]);
+        guess(i,j) = max([0.4*power(10*x(1,i).*(1-x(1,i)).*(1-y(j,1)).*y(j,1),1/4),min([min([1-x(1,i),1-y(j,1),x(1,i)]),1-max([1-x(1,i),1+0.2-y(j,1),x(1,i)])])]);
     end
 end
 
@@ -76,7 +76,7 @@ end
 guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
 
-guess(1,:) = 0;
+guess(1,:) = 0; 
 guess(end,:) = 0;
 guess(:,1) = 0;
 guess(:,end) = 0;
