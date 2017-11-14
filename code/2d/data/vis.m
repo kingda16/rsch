@@ -55,14 +55,14 @@ for k=1:M,
         clf;
     out = reshape(u(k,:),[n,n]);
     %contourf(out,200,'Linestyle','none')
-    contourf(1-sqrt((DX*out).^2+((DX*(out')).^2)'),linspace(-0.2,0.2,100),'LineStyle','none');
+    contourf((1-sqrt((DX*out).^2+((DX*(out')).^2)')).^2,linspace(-0.2,0.2,100),'LineStyle','none');
     %surf(x,y,out);
     %view(-37.5,30);
+    zlim([-1 1])
     colorbar
-shg;
-zlim([-1 1])
     currFrame = getframe(gcf);
     writeVideo(vidObj,currFrame);
+    %pause(0.01)
     
 end
 
