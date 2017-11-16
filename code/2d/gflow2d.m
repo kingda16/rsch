@@ -91,10 +91,15 @@ for i = 1:n
     end
 end
 
+for i =1:n
+    for j = 1:n
+        guess(i,j) = max([0.4*power(10*x(1,j).*(1-x(1,j)).*(1-y(i,1)).*y(i,1),1/4),guess(i,j)]);
+    end
+end
 
 
 
-%guess = power(10*x.*(1-x).*(1-y).*y,1/4)+0.1*sin(7*pi*x).*sin(7*pi*y);
+
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
 
 guess(1,:) = 0; 
