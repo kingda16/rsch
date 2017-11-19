@@ -20,50 +20,90 @@ guess = zeros(n,n);
 %identity ui-1+ui+1==2ui at bdry
 
 
-DX=(-1*diag(ones(1,n-1),-1)+1*diag(ones(1,n-1),1));
-DX(1,1) = -2;
-DX(1,2) = 2;
-DX(end,end) = 2;
-DX(end,end-1) = -2;
+DXt=(-1*diag(ones(1,n-1),-1)+1*diag(ones(1,n-1),1));
+DXt(1,1) = -2;
+DXt(1,2) = 2;
+DXt(end,end) = 2;
+DXt(end,end-1) = -2;
 
 
-DXX=(1*diag(ones(1,n-1),-1)+1*diag(ones(1,n-1),1)-2*diag(ones(1,n)));
-DXX(1,1) = 0;
-DXX(1,2) = 0;
-DXX(end,end) = 0;
-DXX(end,end-1) = 0;
+DXXt=(1*diag(ones(1,n-1),-1)+1*diag(ones(1,n-1),1)-2*diag(ones(1,n)));
+DXXt(1,1) = 0;
+DXXt(1,2) = 0;
+DXXt(end,end) = 0;
+DXXt(end,end-1) = 0;
 
-DXXXX=(1*diag(ones(1,n-2),-2)+1*diag(ones(1,n-2),2)-4*diag(ones(1,n-1),-1)-4*diag(ones(1,n-1),1)+6*diag(ones(1,n)));
-DXXXX(1,1) = -5;
-DXXXX(1,2) = 14;
-DXXXX(1,3) = -14;
-DXXXX(1,4) = 6;
-DXXXX(1,5) = -1;
+DXXXXt=(1*diag(ones(1,n-2),-2)+1*diag(ones(1,n-2),2)-4*diag(ones(1,n-1),-1)-4*diag(ones(1,n-1),1)+6*diag(ones(1,n)));
+DXXXXt(1,1) = -5;
+DXXXXt(1,2) = 14;
+DXXXXt(1,3) = -14;
+DXXXXt(1,4) = 6;
+DXXXXt(1,5) = -1;
 
-DXXXX(end,end) = -5;
-DXXXX(end,end-1) = 14;
-DXXXX(end,end-2) = -14;
-DXXXX(end,end-3) = 6;
-DXXXX(end,end-4) = -1;
+DXXXXt(end,end) = -5;
+DXXXXt(end,end-1) = 14;
+DXXXXt(end,end-2) = -14;
+DXXXXt(end,end-3) = 6;
+DXXXXt(end,end-4) = -1;
 
-DXXXX(2,1) = -2;
-DXXXX(2,2) = 5;
-DXXXX(2,3) = -4;
-DXXXX(2,4) = 1;
+DXXXXt(2,1) = -2;
+DXXXXt(2,2) = 5;
+DXXXXt(2,3) = -4;
+DXXXXt(2,4) = 1;
 
-DXXXX(end-1,end) = -2;
-DXXXX(end-1,end-1) = 5;
-DXXXX(end-1,end-2) = -4;
-DXXXX(end-1,end-3) = 1;
+DXXXXt(end-1,end) = -2;
+DXXXXt(end-1,end-1) = 5;
+DXXXXt(end-1,end-2) = -4;
+DXXXXt(end-1,end-3) = 1;
 
 
-DX=1/(2*dx)*DX;
-DXX = 1/(dx^2)*DXX;
-DXXXX=1/(dx^4)*DXXXX;
+DXt=1/(2*dx)*DXt;
+DXXt = 1/(dx^2)*DXXt;
+DXXXXt=1/(dx^4)*DXXXXt;
 
-DXXXX = sparse(DXXXX);
-DXX = sparse(DXX);
-DX = sparse(DX);
+DXXXXt = sparse(DXXXXt);
+DXXt = sparse(DXXt);
+DXt = sparse(DXt);
+
+%we need big-boy differential operators
+%these eliminate the need for all this reshaping
+
+DY = mat2cell(repmat(DXt,1,n),n,repmat(n,1,n));
+DY = blkdiag(DY{:});
+
+DX = sparse(n,n);
+for i=1:n
+    for j=1:n
+        DX((i-1)*n+1:i*n,(j-1)*n+1:j*n) = DXt(i,j)*eye(n);
+    end
+end
+
+
+DYY = mat2cell(repmat(DXXt,1,n),n,repmat(n,1,n));
+DYY = blkdiag(DYY{:});
+
+DXX = sparse(n,n);
+for i=1:n
+    for j=1:n
+        DXX((i-1)*n+1:i*n,(j-1)*n+1:j*n) = DXXt(i,j)*eye(n);
+    end
+end
+
+
+DYYYY = mat2cell(repmat(DXXXXt,1,n),n,repmat(n,1,n));
+DYYYY = blkdiag(DYYYY{:});
+
+DXXXX = sparse(n,n);
+for i=1:n
+    for j=1:n
+        DXXXX((i-1)*n+1:i*n,(j-1)*n+1:j*n) = DXXXXt(i,j)*eye(n);
+    end
+end
+
+
+cleanup = [0; ones(n-2,1); 0];
+cleanup = repmat(cleanup,n,1);
+
 
 %% Construction of initial profile
 %for i = 1:n
@@ -107,11 +147,10 @@ guess(end,:) = 0;
 guess(:,1) = 0;
 guess(:,end) = 0;
 
-
 guess=reshape(guess,[n*n,1]);
 
 options = odeset('Stats','on')
-[t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,options);
+[t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n),t,guess,options);
 
 save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
 
