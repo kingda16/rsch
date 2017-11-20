@@ -11,14 +11,25 @@ uyyyy = DYYYY*u;
 uxy = DX*uy;
 uxxyy = DXX*uyy;
 
-J = -(2*delta*eye(N^2)+2*epsilon^2*(DXXXX+DYYYY+2*DXXYY)-4(2*(DX*uxx+DXX*ux+DX*uxy+DX*DY*ux)+2*(DY*uyy));
+ux = repmat(ux,1,N^2);
+uxx = repmat(uxx,1,N^2);
+uxxxx = repmat(uxxxx,1,N^2);
+uy = repmat(uy,1,N^2);
+uyy = repmat(uyy,1,N^2);
+uyyyy = repmat(uyyyy,1,N^2);
+uxy = repmat(uxy,1,N^2);
+uxxyy = repmat(uxxyy,1,N^2);
+
+
+
+J = -(2*delta*eye(N^2)+2*epsilon^2*(DXXXX+DYYYY+2*DXX*DYY)-4*(2*(DX.*uxx+DXX.*ux+DX.*uxy+(DX*DY).*ux)+2*(DY.*uyy+DYY.*uy+DY.*uxy+(DX*DY).*uy)-DXX-DYY+DXX.*ux.^2+2*uxx.*DX.*ux+DXX.*uy.^2+2*uxx.*DY.*uy+DYY.*ux.^2+2*uyy.*DX.*ux+DYY.*uy.^2+2*uyy.*DY.*uy));
 
 %figure out what's going on with matrix powers
--(2*delta*u-4*(ux.*(2*uxx+2*uxy)+uy.*(2*uyy+2*uxy)+(uxx+uyy).*(ux.^2+uy.^2-1))+2*epsilon.^2*(uxxxx+uyyyy+2*uxxyy));
+
 
 J(1:N) = 0;
 J(end-N+1:end) = 0;
-J.*cleanup;
+J = J.*repmat(cleanup,1,N^2);
 
 
 

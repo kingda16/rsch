@@ -149,10 +149,11 @@ guess(:,end) = 0;
 
 guess=reshape(guess,[n*n,1]);
 
-J =@(u)jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
+J =@(t,u,Flag)jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
 
-options = odeset('Stats','on');
-[t,u] = ode23s(@(t,u) grad2d(t,u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n),t,guess,options);
+options = odeset('Stats','on','Jacobian',J);
+[t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n),t,guess,options);
+max(max(abs(J(0,u(end,:)',1))))
 
 save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
 

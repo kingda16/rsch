@@ -13,7 +13,7 @@ udot = -(2*delta*u-4*(ux.*(2*uxx+2*uxy)+uy.*(2*uyy+2*uxy)+(uxx+uyy).*(ux.^2+uy.^
 
 udot(1:N) = 0;
 udot(end-N+1:end) = 0;
-udot.*cleanup;
+udot = udot.*cleanup;
 
 
 end
