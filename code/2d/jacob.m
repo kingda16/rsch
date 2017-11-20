@@ -21,9 +21,7 @@ uxy = repmat(uxy,1,N^2);
 uxxyy = repmat(uxxyy,1,N^2);
 
 
-
 J = -(2*delta*eye(N^2)+2*epsilon^2*(DXXXX+DYYYY+2*DXX*DYY)-4*(2*(DX.*uxx+DXX.*ux+DX.*uxy+(DX*DY).*ux)+2*(DY.*uyy+DYY.*uy+DY.*uxy+(DX*DY).*uy)-DXX-DYY+DXX.*ux.^2+2*uxx.*DX.*ux+DXX.*uy.^2+2*uxx.*DY.*uy+DYY.*ux.^2+2*uyy.*DX.*ux+DYY.*uy.^2+2*uyy.*DY.*uy));
-
 %figure out what's going on with matrix powers
 
 

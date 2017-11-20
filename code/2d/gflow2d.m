@@ -120,24 +120,24 @@ cleanup = repmat(cleanup,n,1);
 %end
 
 
-for i = 1:n
-    for j = 1:floor(n/2)
-        guess(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
-    end
-end
-for i = 1:n
-    for j = floor(n/2)+1:n
-        guess(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
-    end
-end
+% for i = 1:n
+%     for j = 1:floor(n/2)
+%         guess(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
+%     end
+% end
+% for i = 1:n
+%     for j = floor(n/2)+1:n
+%         guess(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
+%     end
+% end
+% 
+% for i =1:n
+%     for j = 1:n
+%         guess(i,j) = max([0.4*power(10*x(1,j).*(1-x(1,j)).*(1-y(i,1)).*y(i,1),1/4),guess(i,j)]);
+%     end
+% end
 
-for i =1:n
-    for j = 1:n
-        guess(i,j) = max([0.4*power(10*x(1,j).*(1-x(1,j)).*(1-y(i,1)).*y(i,1),1/4),guess(i,j)]);
-    end
-end
-
-
+guess = sin(pi*x)+sin(pi*y);
 
 
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
@@ -149,9 +149,9 @@ guess(:,end) = 0;
 
 guess=reshape(guess,[n*n,1]);
 
-J =@(u)jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
+J =@(t,u,Flag)jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
 
-options = odeset('Stats','on');
+options = odeset('Stats','on','Jacobian',J);
 [t,u] = ode23s(@(t,u) grad2d(t,u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n),t,guess,options);
 
 save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
