@@ -4,30 +4,36 @@ function [ J ] = jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,N)
 
 ux = DX*u;
 uxx = DXX*u;
-uxxxx = DXXXX*u;
 uy = DY*u;
 uyy = DYY*u;
-uyyyy = DYYYY*u;
 uxy = DX*uy;
-uxxyy = DXX*uyy;
-
-ux = repmat(ux,1,N^2);
-uxx = repmat(uxx,1,N^2);
-uxxxx = repmat(uxxxx,1,N^2);
-uy = repmat(uy,1,N^2);
-uyy = repmat(uyy,1,N^2);
-uyyyy = repmat(uyyyy,1,N^2);
-uxy = repmat(uxy,1,N^2);
-uxxyy = repmat(uxxyy,1,N^2);
 
 
-J = -(2*delta*eye(N^2)+2*epsilon^2*(DXXXX+DYYYY+2*DXX*DYY)-4*(2*(DX.*uxx+DXX.*ux+DX.*uxy+(DX*DY).*ux)+2*(DY.*uyy+DYY.*uy+DY.*uxy+(DX*DY).*uy)-DXX-DYY+DXX.*ux.^2+2*uxx.*DX.*ux+DXX.*uy.^2+2*uxx.*DY.*uy+DYY.*ux.^2+2*uyy.*DX.*ux+DYY.*uy.^2+2*uyy.*DY.*uy));
-%figure out what's going on with matrix powers
+DXY = DX*DY;
+
+J = -(2*delta*speye(N^2)+2*epsilon^2*(DXXXX+DYYYY+2*DXX*DYY));
+
+for i=1:N
+   DX(:,i) = DX(:,i).*(uxx+uxy+uxx.*ux+uyy.*ux);
+   DY(:,i) = DY(:,i).*(uyy+uxy+uxx.*uy+uyy.*uy);
+   DXX(:,i) = DXX(:,i).*(2*ux-1+ux.^2+uy.^2);
+   DYY(:,i) = DYY(:,i).*(2*uy-1+ux.^2+uy.^2);
+   DXY(:,i) = DXY(:,i).*(ux+uy);
+end
+
+
+J = J+4*(2*DXY+DXX+DYY+2*DX+2*DY);
+
 
 
 J(1:N) = 0;
 J(end-N+1:end) = 0;
-J = J.*repmat(cleanup,1,N^2);
+
+
+for i=1:N
+    J(:,i) = J(:,i).*cleanup;
+end
+
 
 
 

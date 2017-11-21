@@ -1,4 +1,4 @@
-function [] = gflow2d( delta,epsilon,n,M,T,offset)
+function [] = dmin2d(delta,epsilon,n,offset)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %   Dylan King
@@ -9,7 +9,7 @@ function [] = gflow2d( delta,epsilon,n,M,T,offset)
 
 
 %% Construction of domain and differential operators
-t=linspace(0,T,M);
+
 
 x=linspace(0,1,n);
 dx=x(2)-x(1);
@@ -72,6 +72,8 @@ DY = mat2cell(repmat(DXt,1,n),n,repmat(n,1,n));
 DY = blkdiag(DY{:});
 
 DX = sparse(n,n);
+
+
 for i=1:n
     for j=1:n
         DX((i-1)*n+1:i*n,(j-1)*n+1:j*n) = DXt(i,j)*eye(n);
@@ -150,10 +152,15 @@ guess(:,end) = 0;
 guess=reshape(guess,[n*n,1]);
 
 
-options = odeset('Stats','on');
-[t,u] = ode45(@(t,u) grad2d(t,u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n),t,guess,options);
 
-save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
+
+J =@(t,u,Flag)jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
+F =@(x) functional2d(delta,epsilon,u,DX,DXX,dx,N)
+
+x = fmincon
+
+
+
 
 end
 
