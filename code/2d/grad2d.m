@@ -1,19 +1,24 @@
-function [udot] = grad2d(t,u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,N)
+function [udot] = grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,N)
 
-ux = DX*u;
-uxx = DXX*u;
-uxxxx = DXXXX*u;
-uy = DY*u;
-uyy = DYY*u;
-uyyyy = DYYYY*u;
-uxy = DX*uy;
-uxxyy = DXX*uyy;
+
+u = reshape(u,[N,N]);
+ux = u*DX;
+uxx = u*DXX;
+uxxxx = u*DXXXX;
+uy = DX*u;
+uyy = DXX*u;
+uyyyy = DXXXX*u;
+uxy = uy*DX;
+uxxyy = uyy*DXX;
 
 udot = -(2*delta*u-4*(ux.*(2*uxx+2*uxy)+uy.*(2*uyy+2*uxy)+(uxx+uyy).*(ux.^2+uy.^2-1))+2*epsilon.^2*(uxxxx+uyyyy+2*uxxyy));
 
-udot(1:N) = 0;
-udot(end-N+1:end) = 0; 
-udot = udot.*cleanup;
+udot(:,end) = 0;
+udot(:,1) = 0; 
+udot(end,:) = 0;
+udot(1,:) = 0; 
+udot = reshape(udot,[N^2,1]);
+
 
 
 end

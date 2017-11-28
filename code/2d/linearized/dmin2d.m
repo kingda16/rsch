@@ -139,7 +139,7 @@ cleanup = repmat(cleanup,n,1);
 %     end
 % end
 
-guess = sin(pi*x)+sin(pi*y);
+guess = x.*(1-x).*y.*(1-y);
 
 
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
@@ -149,16 +149,19 @@ guess(end,:) = 0;
 guess(:,1) = 0;
 guess(:,end) = 0;
 
-guess=reshape(guess,[n*n,1]);
+guess = guess(2:end-1,:);
+guess = guess(:,2:end-1);
 
 
+guess=reshape(guess,[(n-2)*(n-2),1]);
+
+options=optimoptions(@fmincon,'MaxFunEvals',1e+9,'MaxIter',10^3,'Display','iter','SpecifyObjectiveGradient',true);
+
+F =@(x) dmingrad2d(0,pad(x),DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
 
 
-J =@(t,u,Flag)jacob(u,DX,DXX,DXXXX,DY,DYY,DYYYY,cleanup,delta,epsilon,n);
-F =@(x) functional2d(delta,epsilon,u,DX,DXX,dx,N)
-
-x = fmincon
-
+[x] = fminunc(F,guess,options);
+surf(reshape(pad(x),[n,n]));
 
 
 
