@@ -1,11 +1,11 @@
-function [total] = functional2d(u,DX,DXX,DY,DYY,cleanup,delta,epsilon,N)
+function [total] = functional2d(u,DX,DXX,delta,epsilon)
 
-ux = DX*u;
-uxx = DXX*u;
-uy = DY*u;
-uyy = DYY*u;
-uxy = DX*uy;
-uxxyy = DXX*uyy;
+ux = -u*DX';
+uxx = u*DXX';
+uy = DX*u;
+uyy = DXX*u;
+uxy = -uy*DX';
+
 
 
 

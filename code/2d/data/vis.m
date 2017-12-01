@@ -46,41 +46,58 @@ DXXXX = sparse(DXXXX);
 DXX = sparse(DXX);
 DX = sparse(DX);
 
-%vidObj = VideoWriter('test.avi');
-%open(vidObj);
+vidObj = VideoWriter('test.avi');
+open(vidObj);
 
 figure('units','normalized','outerposition',[0 0 1 1]);
 
-for k=1:M,
-        clf;
+for k=1:1:M,
+    clf;
     out = reshape(u(k,:),[n,n]);
     %contourf(out,200,'Linestyle','none')
     %contourf((1-sqrt((DX*out).^2+((DX*(out')).^2)')).^2,linspace(-0.2,0.2,100),'LineStyle','none');
-    xd = -out*DX;
+    xd = -out*DX';
     yd = DX*out;
-    plane = (1-xd.^2-yd.^2).^2<0.1;
-    subplot(1,2,1)
-    quiver(x,y,xd.*plane,yd.*plane);
+    plane = (1-xd.^2-yd.^2).^2<0.5;
+    
+    %quiver(x,y,xd.*plane,yd.*plane);
+    
+
+    %surf(x,y,out);
+    
+    
+    colornum = 4;
+    sugg = [1 0;0 1; -1 0; 0 -1];
+    bank = parula(colornum);
+    idx = customsort([reshape(xd.*plane,[n^2,1]) reshape(yd.*plane,[n^2,1])],sugg,colornum);
+    for i=1:colornum
+        bool = (idx-i)==0;
+        quiver(x,y,xd.*plane.*bool,yd.*plane.*bool,'color',bank(i,:))
+        hold on
+    end
+   
+   
+
+    
+   
+
+    
+
     xlabel('x')
     ylabel('y')
-    subplot(1,2,2)
-    surf(x,y,out);
-    xlabel('x')
-    ylabel('y')
-    zlim([-1 1])
-    %subplot(1,3,3)
-    %surf(x,y,reshape(grad2d(t,u(k,:),DX,DXX,DXXXX,delta,epsilon,n),[n,n]))
-    %xlabel('x')
-    %ylabel('y')
+    
+    %scatter(reshape(xd.*plane,[n^2,1]),reshape(yd.*plane,[n^2,1]))
+    
+    
     
     
     %view(-37.5,30);
-    %currFrame = getframe(gcf);
-    %writeVideo(vidObj,currFrame);
+    currFrame = getframe(gcf);
+    writeVideo(vidObj,currFrame);
     pause(0.01)
     disp(k)
     
 end
 
-%close(vidObj);
+close(vidObj);
 
