@@ -46,8 +46,8 @@ DXXXX = sparse(DXXXX);
 DXX = sparse(DXX);
 DX = sparse(DX);
 
-vidObj = VideoWriter('test.avi');
-open(vidObj);
+%vidObj = VideoWriter('test.avi');
+%open(vidObj);
 
 figure('units','normalized','outerposition',[0 0 1 1]);
 
@@ -60,21 +60,23 @@ for k=1:1:M,
     yd = DX*out;
     plane = (1-xd.^2-yd.^2).^2<0.5;
     
+    %contourf(abs(atan2(yd,xd)),100,'LineStyle','none');
+
     %quiver(x,y,xd.*plane,yd.*plane);
     
 
-    %surf(x,y,out);
+    surf(x,y,out);
     
     
-    colornum = 4;
-    sugg = [1 0;0 1; -1 0; 0 -1];
-    bank = parula(colornum);
-    idx = customsort([reshape(xd.*plane,[n^2,1]) reshape(yd.*plane,[n^2,1])],sugg,colornum);
-    for i=1:colornum
-        bool = (idx-i)==0;
-        quiver(x,y,xd.*plane.*bool,yd.*plane.*bool,'color',bank(i,:))
-        hold on
-    end
+%     colornum = 4;
+%     sugg = [1 0;0 1; -1 0; 0 -1];
+%     bank = parula(colornum);
+%     idx = customsort([reshape(xd.*plane,[n^2,1]) reshape(yd.*plane,[n^2,1])],sugg,colornum);
+%     for i=1:colornum
+%         bool = (idx-i)==0;
+%         quiver(x,y,xd.*plane.*bool,yd.*plane.*bool,'color',bank(i,:))
+%         hold on
+%     end
    
    
 
@@ -92,8 +94,8 @@ for k=1:1:M,
     
     
     %view(-37.5,30);
-    currFrame = getframe(gcf);
-    writeVideo(vidObj,currFrame);
+    %currFrame = getframe(gcf);
+    %writeVideo(vidObj,currFrame);
     pause(0.01)
     disp(k)
     
