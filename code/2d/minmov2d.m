@@ -102,16 +102,16 @@ guess(end,:) = 0;
 guess(:,1) = 0;
 guess(:,end) = 0;
 
+%guess = sin(pi*x).*sin(pi*y);
 
 
-
-guess = sin(pi*x).*sin(pi*y);
 u = zeros(M,n^2);
 u(1,:) = reshape(guess,[n^2,1]);
 
 options = optimoptions('fminunc','SpecifyObjectiveGradient',true,'Algorithm','quasi-newton','Display','off');
 
 for i=2:M
+	disp(i)
      F=@(x) minmovf(x,reshape(u(i-1,:),[n,n]),DX,DXX,DXXXX,delta,epsilon,n,tres);
      u(i,:) = reshape(fminunc(F,guess,options),[n^2,1]);
 end

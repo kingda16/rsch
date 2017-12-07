@@ -1,0 +1,54 @@
+#########################BEGIN-PROLOG#########################
+JobId             = 4368602
+JobName           = gflow1
+UserId            = kingda16(20126)
+GroupId           = kingda16(20126)
+Priority          = 129
+Nice              = 0
+Account           = generalgrp
+QOS               = normal
+Requeue           = 1
+Restarts          = 0
+BatchFlag         = 1
+Reboot            = 0
+ExitCode          = 0:0
+RunTime           = 00:00:00
+TimeLimit         = 23:40:00
+TimeMin           = N/A
+SubmitTime        = 2017-12-01T14:17:21
+EligibleTime      = 2017-12-01T14:17:21
+StartTime         = 2017-12-01T14:17:49
+EndTime           = 2017-12-02T13:57:49
+Partition         = medium
+AllocNode:Sid     = virgo:18509
+NodeList          = a1a-u3-c1-b[3,8]
+BatchHost         = a1a-u3-c1-b3
+NumNodes          = 2
+NumCPUs           = 16
+CPUs/Task         = 1
+ReqB:S:C:T        = 0:0:*:*
+Socks/Node        = *
+NtasksPerN:B:S:C  = 8:0:*:*
+CoreSpec          = *
+MinCPUsNode       = 8
+MinMemoryNode     = 4G
+MinTmpDiskNode    = 0
+Command           = /deac/generalGrp/gemmerGrp/DAK/slrm/gflow2d.slurm
+WorkDir           = /deac/generalGrp/gemmerGrp/DAK/slrm
+StdErr            = /deac/generalGrp/gemmerGrp/DAK/slrm/slurm-4368602.out
+StdOut            = /deac/generalGrp/gemmerGrp/DAK/slrm/slurm-4368602.out
+###########################END-PROLOG#########################
+
+Using Matlab directory /deac/opt/matlab-2017a/bin to find executable...
+MATLAB is selecting SOFTWARE OPENGL rendering.
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017a (9.2.0.556344) 64-bit (glnxa64)
+                               March 27, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+>> 

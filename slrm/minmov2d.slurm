@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #SBATCH --partition=medium
-#SBATCH --job-name=gflow1
+#SBATCH --job-name=minmov
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=kingda16@wfu.edu
 #SBATCH --account=generalGrp
@@ -13,4 +13,4 @@
 
 cd /deac/generalGrp/gemmerGrp/DAK/code/2d
 module load matlab-2017a
-use-student-matlab -r "gflow2d(0,0.1,100,2000,0.01)"
+use-student-matlab -r "minmov2d(0,0.1,100,50,0.01)"
