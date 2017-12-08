@@ -1,5 +1,6 @@
 function [total] = functional2d(u,DX,DXX,delta,epsilon)
 
+n = length(u);
 ux = -u*DX';
 uxx = u*DXX';
 uy = DX*u;
@@ -17,6 +18,7 @@ total(:,1) = total(:,1)/2;
 
 
 total = sum(sum(total));
+total = total/n^2;
 
 
 end

@@ -4,7 +4,6 @@ function [] = minmov2d( delta,epsilon,n,M,T,offset)
 tres = T/M;
 
 
-
 x=linspace(0,1,n);
 dx=x(2)-x(1);
 [x,y] = meshgrid(x,x);
@@ -108,12 +107,15 @@ guess(:,end) = 0;
 u = zeros(M,n^2);
 u(1,:) = reshape(guess,[n^2,1]);
 
-options = optimoptions('fminunc','SpecifyObjectiveGradient',true,'Algorithm','quasi-newton','Display','off');
+tol = 0.0001;
+options = optimoptions('fminunc','SpecifyObjectiveGradient',true,'Algorithm','quasi-newton','Display','off','OptimalityTolerance',tol,'FunctionTolerance',tol,'StepTolerance',tol);
 
 for i=2:M
 	disp(i)
      F=@(x) minmovf(x,reshape(u(i-1,:),[n,n]),DX,DXX,DXXXX,delta,epsilon,n,tres);
      u(i,:) = reshape(fminunc(F,guess,options),[n^2,1]);
+     surf(reshape(u(i,:),[n,n]));
+     pause(0.01)
 end
 
 save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','tres','x','y','M','T','n','epsilon','delta');
