@@ -97,6 +97,9 @@ end
 
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
 
+guess = movmean(guess,5);
+guess = movmean(guess,5,2);
+
 guess(1,:) = 0; 
 guess(end,:) = 0;
 guess(:,1) = 0;
