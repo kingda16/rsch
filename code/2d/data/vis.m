@@ -45,8 +45,8 @@ DXXXX=1/(dx^4)*DXXXX;
 DXXXX = sparse(DXXXX);
 DXX = sparse(DXX);
 DX = sparse(DX);
-
-vidObj = VideoWriter('e0.1d0.01n100m2000t0.1.mat');
+    
+vidObj = VideoWriter('e0.1d0n100m5t0.01');
 open(vidObj);
 set(gcf,'units','normalized','outerposition',[0 0 1 1]);
 
