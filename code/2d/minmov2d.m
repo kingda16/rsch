@@ -1,7 +1,8 @@
 function [] = minmov2d( delta,epsilon,n,M,T,offset)
 
 
-tres = T/M;
+%tres = T/M;
+tres = 1;
 
 
 x=linspace(0,1,n);
@@ -71,16 +72,16 @@ DX = sparse(DX);
 %end
 
 
-% for i = 1:n
-%     for j = 1:floor(n/2)
-%         guess(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
-%     end
-% end
-% for i = 1:n
-%     for j = floor(n/2)+1:n
-%         guess(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
-%     end
-% end
+for i = 1:n
+    for j = 1:floor(n/2)
+        guess(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
+    end
+end
+for i = 1:n
+    for j = floor(n/2)+1:n
+        guess(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
+    end
+end
 
 
 
@@ -91,7 +92,7 @@ DX = sparse(DX);
 %     end
 % end
 
-guess = sin(pi*x).*sin(pi*y);
+%guess = sin(pi*x).*sin(pi*y);
 
 
 %guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
@@ -107,15 +108,13 @@ guess(:,end) = 0;
 u = zeros(M,n^2);
 u(1,:) = reshape(guess,[n^2,1]);
 
-tol = 0.0001;
-options = optimoptions('fminunc','SpecifyObjectiveGradient',true,'Algorithm','quasi-newton')%,'Display','off')%,'OptimalityTolerance',tol,'FunctionTolerance',tol,'StepTolerance',tol);
+tol = 0.001;
+options = optimoptions('fminunc','SpecifyObjectiveGradient',true,'Algorithm','quasi-newton','Display','off')%,'OptimalityTolerance',tol,'FunctionTolerance',tol,'StepTolerance',tol);
 
 for i=2:M
 	disp(i)
      F=@(x) minmovf(x,reshape(u(i-1,:),[n,n]),DX,DXX,DXXXX,delta,epsilon,n,tres);
      u(i,:) = reshape(fminunc(F,guess,options),[n^2,1]);
-     surf(reshape(u(i,:),[n,n]));
-     pause(0.01)
 end
 
 save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','tres','x','y','M','T','n','epsilon','delta');
