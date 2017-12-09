@@ -1,11 +1,11 @@
 function [total] = functional2d(u,DX,DXX,delta,epsilon)
 
 n = length(u);
-ux = -u*DX';
+ux = u*DX';
 uxx = u*DXX';
 uy = DX*u;
 uyy = DXX*u;
-uxy = -uy*DX';
+uxy = uy*DX';
 
 
 

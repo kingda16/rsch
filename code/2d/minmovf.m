@@ -3,8 +3,8 @@ function [ f,grad ] = minmovf(u,old,DX,DXX,DXXXX,delta,epsilon,n,T)
 %   Detailed explanation goes here
 
 
-f = functional2d(u,DX,DXX,delta,epsilon)+(1/(2*T))*sum(sum((old-u).^2));
+f = functional2d(u,DX,DXX,delta,epsilon);
 %%FIXME
-grad=reshape(-grad2d(0,reshape(u,[n^2,1]),DX,DXX,DXXXX,delta,epsilon,n),[n,n])+(1/T)*(u-old);
+grad=reshape(-grad2d(0,reshape(u,[n^2,1]),DX,DXX,DXXXX,delta,epsilon,n),[n,n]);
 end
 
