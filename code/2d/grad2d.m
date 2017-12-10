@@ -11,9 +11,8 @@ uyyyy = DXXXX*u;
 uxy = uy*DX';
 uxxyy = uyy*DXX';
 
+
 udot = -(2*delta*u-4*(ux.*(2*ux.*uxx+2*uy.*uxy)+uy.*(2*uy.*uyy+2*ux.*uxy)+(uxx+uyy).*(ux.^2+uy.^2-1))+2*epsilon.^2*(uxxxx+uyyyy+2*uxxyy));
-
-
 
 
 udot(:,end) = 0;
