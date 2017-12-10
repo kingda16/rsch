@@ -2,7 +2,7 @@ function [] = minmov2d( delta,epsilon,n,M,T,offset)
 
 
 %tres = T/M;
-tres = 1;
+tres = 100;
 
 
 x=linspace(0,1,n);

@@ -13,4 +13,4 @@
 
 cd /deac/generalGrp/gemmerGrp/DAK/code/2d
 module load matlab-2017a
-use-student-matlab -r "minmov2d(0,0.1,100,50,0.01)"
+use-student-matlab -r "minmov2d(0,0.1,100,50,0.01,0)"

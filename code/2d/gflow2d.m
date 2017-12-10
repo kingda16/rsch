@@ -1,4 +1,4 @@
-function [] = gflow2d( delta,epsilon,n,M,T,seed)
+function [] = gflow2d( delta,epsilon,n,M,T,seed,appendix)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %   Dylan King
@@ -71,6 +71,6 @@ grad2d(0,guess,DX,DXX,DXXXX,delta,epsilon,n);
 options = odeset('Stats','on');
 [t,u] = ode45(@(t,u,f) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n),t,guess,[],options);
 
-save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta');
+save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','t','x','y','M','T','n','epsilon','delta',appendix);
 end
 
