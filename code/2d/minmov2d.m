@@ -1,8 +1,7 @@
-function [] = minmov2d( delta,epsilon,n,M,T,offset)
+function [] = minmov2d( delta,epsilon,n,M)
 
 
-%tres = T/M;
-tres = 100;
+tres = 10^-0;
 
 
 x=linspace(0,1,n);
@@ -56,71 +55,27 @@ DX = sparse(DX);
 
 
 
+guess = 0.5*sin(x*pi).*sin(y*pi);
 
-%% Construction of initial profile
-%for i = 1:n
-%    for j = 1:n
-%        guess(i,j) = max([0.2*power(10*x(1,i).*(1-x(1,i)).*(1-y(j,1)).*y(j,1),1/4),min([min([1-x(1,i),1-y(j,1),x(1,i)]),1-max([1-x(1,i),1+offset-y(j,1),x(1,i)])])]);
-%    end
-%end
-
-
-%for i = 1:n
-%for j = 1:n
-%guess(i,j) = max([0.2*power(10*x(1,i).*(1-x(1,i)).*(1-y(j,1)).*y(j,1),1/4),min([1-x(1,i),x(1,i),y(j,1),1-y(j,1)])]);
-%end
-%end
-
-
-for i = 1:n
-    for j = 1:floor(n/2)
-        guess(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
-    end
-end
-for i = 1:n
-    for j = floor(n/2)+1:n
-        guess(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
-    end
-end
-
-
-
-
-% for i =1:n
-%     for j = 1:n
-%         guess(i,j) = max([0.4*power(10*x(1,j).*(1-x(1,j)).*(1-y(i,1)).*y(i,1),1/4),guess(i,j)]);
-%     end
-% end
-
-%guess = sin(pi*x).*sin(pi*y);
-
-
-%guess = 0.25*sin(7*pi*x).*sin(7*pi*y);
-
-guess = movmean(guess,5);
-guess = movmean(guess,5,2);
-
-guess(1,:) = 0; 
-guess(end,:) = 0;
-guess(:,1) = 0;
-guess(:,end) = 0;
-
-%guess = sin(pi*x).*sin(pi*y);
 
 
 u = zeros(M,n^2);
 u(1,:) = reshape(guess,[n^2,1]);
 
-tol = 0.001;
-options = optimoptions('fminunc','SpecifyObjectiveGradient',true,'Algorithm','quasi-newton','Display','off')%,'OptimalityTolerance',tol,'FunctionTolerance',tol,'StepTolerance',tol);
+
+options = optimoptions('fminunc','Display','iter','Algorithm','quasi-newton','SpecifyObjectiveGradient',true);
 
 for i=2:M
-	disp(i)
      F=@(x) minmovf(x,reshape(u(i-1,:),[n,n]),DX,DXX,DXXXX,delta,epsilon,n,tres);
      u(i,:) = reshape(fminunc(F,guess,options),[n^2,1]);
+     disp([i,norm((u(i-1,:)-u(i,:))),functional2d(reshape(u(i,:),[n,n]),DX,DXX,delta,epsilon)]);
+     surf(reshape(u(i,:),[n,n]));
+     zlim([0,0.8])
+     pause(0.1)
+     %tres = 3*tres;
 end
 
-save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','tres','x','y','M','T','n','epsilon','delta');
+%save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),'.mat'),'u','tres','x','y','M','T','n','epsilon','delta');
 
 
 
