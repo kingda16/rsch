@@ -23,6 +23,7 @@ total(:,1) = total(:,1)/2;
 
 subplot(2,2,1)
 surf(x,y,u);
+zlim([-1 1]);
 xlabel('x')
 ylabel('y')
 
