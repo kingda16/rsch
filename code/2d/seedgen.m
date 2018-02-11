@@ -24,16 +24,16 @@ end
 % end
 % 
 % 
-for i = 1:n
-   for j = 1:floor(n/2)
-       seed(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
-   end
-end
-for i = 1:n
-   for j = floor(n/2)+1:n
-       seed(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
-   end
-end
+% for i = 1:n
+%    for j = 1:floor(n/2)
+%        seed(i,j) = min([x(1,j),0.5-x(1,j),y(i,1),1-y(i,1)]);
+%    end
+% end
+% for i = 1:n
+%    for j = floor(n/2)+1:n
+%        seed(i,j) = min(abs([y(i,1)-0.5,0.5-y(i,1),x(1,j)-0.5,1-x(1,j),2*y(i,1),2-2*y(i,1)]));
+%    end
+% end
 % 
 % 
 % 

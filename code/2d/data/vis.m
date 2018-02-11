@@ -46,20 +46,16 @@ DXXXX = sparse(DXXXX);
 DXX = sparse(DXX);
 DX = sparse(DX);
     
-<<<<<<< HEAD
-vidObj = VideoWriter('test');
-open(vidObj);
-figure
-=======
+
 %vidObj = VideoWriter('e0.1d0n100m5t0.01');
 %open(vidObj);
->>>>>>> 21989c47eef959a496ea6c2ddf7a37b54fc92a6d
+
 set(gcf,'units','normalized','outerposition',[0 0 1 1]);
 
 epast = [];
 
 
-for k=1:10:M,
+for k=1:1:M,
     clf;
     out = reshape(u(k,:),[n,n]);
     epast=visf(out,DX,DXX,delta,epsilon,x,y,epast);
