@@ -55,10 +55,12 @@ set(gcf,'units','normalized','outerposition',[0 0 1 1]);
 epast = [];
 
 
+
+
 for k=1:1:M,
     clf;
     out = reshape(u(k,:),[n,n]);
-    epast=visf(out,DX,DXX,delta,epsilon,x,y,epast);
+    epast=visf(out,DX,DXX,delta,epsilon,x,y,epast,g);
     %currFrame = getframe(gcf);
     %writeVideo(vidObj,currFrame);
     pause(0.01);
