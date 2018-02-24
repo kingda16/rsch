@@ -1,25 +1,5 @@
-function [] = gflow2d( delta,epsilon,n,M,T,seed,g,appendix)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%   Dylan King
-%
-%   2-dimensional gradient flow
-%
-%
-
-
-%% Construction of domain and differential operators
-t=linspace(0,T,M);
-
-x=linspace(0,1,n);
-dx=x(2)-x(1);
-[x,y] = meshgrid(x,x);
-
-
-
-%identity ui-1+ui+1==2ui at bdry
-
-
+n = 50;
+dx = 1/(n+1);
 DX=(-1*diag(ones(1,n-1),-1)+1*diag(ones(1,n-1),1));
 DX(1,1) = -2;
 DX(1,2) = 2;
@@ -65,12 +45,31 @@ DXXXX = sparse(DXXXX);
 DXX = sparse(DXX);
 DX = sparse(DX);
 
-guess=reshape(seed,[n*n,1]);
 
 
-options = odeset('Stats','on');
-[t,u] = ode45(@(t,u,f) grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,n,g),t,guess,[],options);
+epsx = zeros(19,1);
+energy = zeros(19,1);
 
-save(strcat('./data/e',num2str(epsilon),'d',num2str(delta),'n',num2str(n),'m',num2str(M),'t',num2str(T),appendix,'.mat'),'u','t','x','y','M','T','n','epsilon','delta','g');
+xt = zeros(31,31);
+yt = zeros(31,31);
+zt = zeros(31,31);
+
+for i = 0:30
+    for j = 0:30
+        eps = 0.02+i/30*(0.2-0.02);
+        del = j/30*(10);
+        xt(i+1,j+1) = eps;
+        yt(i+1,j+1) = del;
+        try
+            
+            load(strcat('e',num2str(eps),'d',num2str(del),'n50m50t0.03.mat'));
+            zt(i+1,j+1) = functional2d(reshape(u(end,:),[n,n]),DX,DXX,del,eps);
+            
+        catch ME
+        
+        end
+    end
 end
-
+surf(xt,yt,zt)
+xlabel('\epsilon');
+ylabel('\delta');

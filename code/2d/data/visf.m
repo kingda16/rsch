@@ -1,4 +1,4 @@
-function [etot] = visf(u,DX,DXX,delta,epsilon,x,y,epast)
+function [etot] = visf(u,DX,DXX,delta,epsilon,x,y,epast,g)
 
 
 % surf
@@ -10,12 +10,12 @@ function [etot] = visf(u,DX,DXX,delta,epsilon,x,y,epast)
 n = length(u);
 ux = u*DX';
 uy = DX*u;
-plane = (1-ux.^2-uy.^2).^2<0.5;
+plane = (g-ux.^2-uy.^2).^2<0.5;
 uxx = u*DXX';
 uyy = DXX*u;
 uxy = uy*DX';
 
-total = delta*u.^2+(ux.^2+uy.^2-1).^2+epsilon.^2*(uxx.^2+uyy.^2+uxy.^2);
+total = delta*u.^2+(ux.^2+uy.^2-g).^2+epsilon.^2*(uxx.^2+uyy.^2+uxy.^2);
 total(1,:) = total(1,:)/2;
 total(end,:) = total(end,:)/2;
 total(:,end) = total(:,end)/2;

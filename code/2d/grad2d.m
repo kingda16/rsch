@@ -1,4 +1,4 @@
-function [udot] = grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,N)
+function [udot] = grad2d(t,u,DX,DXX,DXXXX,delta,epsilon,N,g)
 
 
 u = reshape(u,[N,N]);
@@ -10,9 +10,12 @@ uyy = DXX*u;
 uyyyy = DXXXX*u;
 uxy = uy*DX';
 uxxyy = uyy*DXX';
+gx = g*DX';
+gy = DX*g;
 
 
-udot = -(2*delta*u-4*(ux.*(2*ux.*uxx+2*uy.*uxy)+uy.*(2*uy.*uyy+2*ux.*uxy)+(uxx+uyy).*(ux.^2+uy.^2-1))+2*epsilon.^2*(uxxxx+uyyyy+2*uxxyy));
+
+udot = -(2*delta*u-4*(ux.*(2*ux.*uxx+2*uy.*uxy-gx)+uy.*(2*uy.*uyy+2*ux.*uxy-gy)+(uxx+uyy).*(ux.^2+uy.^2-g))+2*epsilon.^2*(uxxxx+uyyyy+2*uxxyy));
 
 
 udot(:,end) = 0;
